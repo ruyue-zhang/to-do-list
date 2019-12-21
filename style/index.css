@@ -8,18 +8,17 @@
   margin: 200px auto;
 
   width: 500px;
-  height: 350px;
+  height: 400px;
   border-radius: 5px;
   background-color: #cbcbcb;
 }
 
-.header {
+.main-page {
   position: absolute;
   margin: 15px 25px auto 25px;
 
   border-radius: 5px;
   width: 450px;
-  height: 300px;
 
   background-color: #fefefe;
 }
@@ -71,4 +70,22 @@
 
 .checked {
   margin-left: 8px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 30px auto 10px auto;
+
+  width: 300px;
+
+}
+
+.button {
+  border: 0;
+  width: 60px;
+  height: 25px;
+  color: #fc999c;
+  outline-color: #fc999c;
+  background-color: white;
 }
