@@ -13,7 +13,7 @@
   background-color: #cbcbcb;
 }
 
-.main-page {
+.header {
   position: absolute;
   margin: 15px 25px auto 25px;
 
@@ -30,7 +30,6 @@
 
 .description {
   margin-left: 20px;
-  
   font-style: italic;
   font-size: 13px;
 }
@@ -40,7 +39,7 @@
 }
 .task {
   width: 300px;
-
+  
   line-height: 25px;
   border: 1px solid #cbcbcb;
 }
@@ -53,4 +52,23 @@
   border-radius: 5px;
 
   background-color: #fc999c;
+}
+
+.task-list {
+  width: 350px;
+  margin: 30px auto auto 40px;
+}
+
+.task-list li {
+  margin-top: 10px;
+  line-height: 25px;
+  font-size: 15px;
+}
+
+.task-list li:nth-child(2n) {
+  background-color: #f4ebeb;
+}
+
+.checked {
+  margin-left: 8px;
 }
