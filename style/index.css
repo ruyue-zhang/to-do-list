@@ -25,5 +25,11 @@
 }
 
 .title {
-  margin: 50px  auto auto 20px;
+  margin: 50px auto 10px 20px;
 }
+
+.description {
+  margin-left: 20px;
+  font-style: italic;
+}
+
