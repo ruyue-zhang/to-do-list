@@ -14,19 +14,11 @@
           <p class="description">
             Simple Todo List with adding and filter by diff status.
           </p>
-          <form action="#" class="add-task">
+          <form action="#" class="add-task" onsubmit="addTask()">
             <input type="text" class="task">
             <input type="submit" class="button-add" value="Add">
           </form>
           <ol class="task-list">
-            <li>
-              <input type="checkbox" class="checked">
-              <span>任务一</span>
-            </li>
-            <li>
-                <input type="checkbox" class="checked">
-                <span>任务二</span>
-            </li>
           </ol>
           <div class="footer">
             <button class="button button-all">ALL</button>
@@ -34,7 +26,7 @@
             <button class="button button-complete">Complete</button>
           </div>
       </div>
-      
   </div>  
+  <script src="todo-list.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
