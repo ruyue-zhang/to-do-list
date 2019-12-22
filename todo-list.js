@@ -23,10 +23,16 @@ function addLineThrough(event) {
   var li = target.parentNode;
   if(target.checked) {
     li.style.textDecoration = "line-through";
+    li.style.color = "#cbcbcb"
   }
   else {
     li.style.textDecoration = "none";
+    li.style.color = "";
   } 
+}
+
+function isChecked() {
+
 }
 
 
