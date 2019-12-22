@@ -10,6 +10,17 @@ function addTask(event) {
   }
 }
 
+function getDataFromDB(key,taskList) {
+  var taskInfo = localStorage.getItem(key);
+  var row = "<input type='checkbox' class='checked'>" +
+  "<span>" + taskInfo + "</span>" + 
+  "<button class='remove' onclick='removeTask()'>X</button>";
+  var li = document.createElement("li");
+  li.innerHTML = row;
+  li.className = 'row';
+  taskList.appendChild(li);
+}
+
 function addLineThrough(event) {
   var currentEvent = event || window.event;
   if(currentEvent.target) {
@@ -26,20 +37,10 @@ function addLineThrough(event) {
   else {
     li.style.textDecoration = "none";
     li.style.color = "";
-  } 
+  }
 }
 
-function getDataFromDB(key,taskList) {
-  var taskInfo = localStorage.getItem(key);
-  var row = "<input type='checkbox' class='checked'>" +
-  "<span>" + taskInfo + "</span>"
-  var li = document.createElement("li");
-  li.innerHTML = row;
-  li.className = 'row';
-  taskList.appendChild(li);
-}
-
-function dispalyList(status) {
+function differentButtonDispaly(status) {
   var row = document.querySelectorAll("li");
   for(var i = 0; i < row.length; i++) {
     var check = row[i].getElementsByClassName('checked')[0];
@@ -56,5 +57,19 @@ function dispalyList(status) {
   }
 }
 
+function removeTask(target) {
+  var currentEvent = event || window.event;
+  if(currentEvent.target) {
+    var target = currentEvent.target;
+  }
+  else {
+    var target = currentEvent.srcElement;
+  }
+  if('X' === target.innerText) {
+    var ol = target.parentNode.parentNode;
+    ol.removeChild(target.parentNode);
+  }
+
+}
 
 
