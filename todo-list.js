@@ -6,6 +6,7 @@ function addTask(event) {
   if(taskInfo) {
     localStorage.setItem(key,taskInfo);
     getDataFromDB(key,taskList);
+    document.getElementsByClassName('task')[0].value = '';
   }
 }
 
@@ -30,15 +31,30 @@ function addLineThrough(event) {
 
 function getDataFromDB(key,taskList) {
   var taskInfo = localStorage.getItem(key);
-  console.log(taskInfo);
-
   var row = "<input type='checkbox' class='checked'>" +
   "<span>" + taskInfo + "</span>"
   var li = document.createElement("li");
   li.innerHTML = row;
+  li.className = 'row';
   taskList.appendChild(li);
 }
 
+function dispalyList(status) {
+  var row = document.querySelectorAll("li");
+  for(var i = 0; i < row.length; i++) {
+    var check = row[i].getElementsByClassName('checked')[0];
+    switch(status) {
+      case 'Active':
+        check.checked ? row[i].style.display = 'none' : row[i].style.display = '';
+        break;
+      case 'Complete':
+        !check.checked ? row[i].style.display = 'none' : row[i].style.display = '';
+        break;
+      default:
+        row[i].style.display = '';
+    } 
+  }
+}
 
 
 
