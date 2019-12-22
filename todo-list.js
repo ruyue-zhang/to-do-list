@@ -1,14 +1,11 @@
+var key = 0;
 function addTask(event) {
+  ++key;
   var taskList = document.getElementsByClassName('task-list')[0];
   var taskInfo = document.getElementsByClassName('task')[0].value;
-  var buttonComelete = document.getElementsByClassName('button-complete')[0];
   if(taskInfo) {
-    var row = 
-    "<input type='checkbox' class='checked'>" +
-    "<span>" + taskInfo + "</span>";
-  var li = document.createElement("li");
-  li.innerHTML = row;
-  taskList.appendChild(li);
+    localStorage.setItem(key,taskInfo);
+    getDataFromDB(key,taskList);
   }
 }
 
@@ -31,8 +28,15 @@ function addLineThrough(event) {
   } 
 }
 
-function isChecked() {
+function getDataFromDB(key,taskList) {
+  var taskInfo = localStorage.getItem(key);
+  console.log(taskInfo);
 
+  var row = "<input type='checkbox' class='checked'>" +
+  "<span>" + taskInfo + "</span>"
+  var li = document.createElement("li");
+  li.innerHTML = row;
+  taskList.appendChild(li);
 }
 
 

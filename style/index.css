@@ -36,12 +36,14 @@
 .add-task {
   margin: 10px auto auto 20px;
 }
+
 .task {
   width: 300px;
   
   line-height: 25px;
   border: 1px solid #cbcbcb;
 }
+
 .button-add {
   width: 60px;
   height: 25px;
@@ -49,8 +51,12 @@
   color: white;
   border: 0;
   border-radius: 5px;
+  outline-color: none;
 
   background-color: #fc999c;
+}
+.button-add:hover {
+  background-color: #f7abae;
 }
 
 .task-list {
