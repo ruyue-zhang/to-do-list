@@ -1,4 +1,5 @@
 var key = 0;
+var state = 'All';
 function addTask(event) {
   ++key;
   var taskList = document.getElementsByClassName('task-list')[0];
@@ -6,6 +7,9 @@ function addTask(event) {
   if(taskInfo) {
     localStorage.setItem(key,taskInfo);
     getDataFromDB(key,taskList);
+    if('Complete' === state) {
+      differentButtonDispaly('Complete');
+    }
     document.getElementsByClassName('task')[0].value = '';
   }
 }
@@ -41,6 +45,7 @@ function addLineThrough(event) {
 }
 
 function differentButtonDispaly(status) {
+  state = status;
   var row = document.querySelectorAll("li");
   for(var i = 0; i < row.length; i++) {
     var check = row[i].getElementsByClassName('checked')[0];
