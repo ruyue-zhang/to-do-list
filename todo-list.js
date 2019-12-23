@@ -1,17 +1,20 @@
 var key = 0;
 var state = 'All';
+var taskList = document.getElementsByClassName('task-list')[0];
+
 function addTask(event) {
+  ++key;
   var taskInfo = document.getElementsByClassName('task')[0].value;
   if(taskInfo) {
-    setDataIntoDB(taskInfo,false);
+    setDataIntoDB(key,taskInfo,false);
     var taskObject = getDataFromDB(key);
-    addNewTaskInPage(taskObject);
+    addTaskInPage(taskObject);
   }
 }
 
-function setDataIntoDB(taskInfo,checked) {
-  ++key;
+function setDataIntoDB(key,taskInfo,checked) {
   var taskObject = {
+    key: key,
     taskName: taskInfo,
     isChecked: checked
   }
@@ -20,18 +23,18 @@ function setDataIntoDB(taskInfo,checked) {
 }
 
 function getDataFromDB(key) {
-  var taskList = document.getElementsByClassName('task-list')[0];
   var taskInfo = localStorage.getItem(key);
   taskInfo = JSON.parse(taskInfo);
   return taskInfo;
 }
 
-function addNewTaskInPage(taskObject) {
-  var taskList = document.getElementsByClassName('task-list')[0];
+function addTaskInPage(taskObject) {
   var isChecked = taskObject.isChecked ? 'checked' : '';
   var taskInnerHtml = "<input type='checkbox' class='checked' "+isChecked+">" +
-  "<span>" + taskObject.taskName + "</span>" + 
-  "<button class='remove' onclick='removeTask()'>X</button>";
+  "<span class='task-name'>" + taskObject.taskName + "</span>" + 
+  "<button class='remove'>X</button>" +
+  "<span class='key'>" + taskObject.key + "</span>";
+  console.log(taskObject.key);
   var li = document.createElement("li");
   li.innerHTML = taskInnerHtml;
   li.className = 'row';
@@ -43,7 +46,8 @@ function addNewTaskInPage(taskObject) {
   document.getElementsByClassName('task')[0].value = '';
 }
 
-function addLineThrough(event) {
+
+taskList.addEventListener('click',function(event) {
   var currentEvent = event || window.event;
   if(currentEvent.target) {
     var target = currentEvent.target;
@@ -51,6 +55,12 @@ function addLineThrough(event) {
   else {
     var target = currentEvent.srcElement;
   }
+  addLineThrough(target);
+  changeIsCheckedInDB(target);
+  removeTask(target);
+})
+
+function addLineThrough(target) {
   var li = target.parentNode;
   if(target.checked) {
     li.style.textDecoration = "line-through";
@@ -59,6 +69,19 @@ function addLineThrough(event) {
   else {
     li.style.textDecoration = "none";
     li.style.color = "";
+  }
+}
+
+function changeIsCheckedInDB(target) {
+  var li = target.parentNode;
+  var key = li.getElementsByClassName('key')[0].innerText;
+  var taskInfo = document.getElementsByClassName('task-name')[0].innerText;
+  var isChecked = target.checked;
+  if(target.checked) {
+    setDataIntoDB(key,taskInfo,true);
+  }
+  else {
+    setDataIntoDB(key,taskInfo,false);
   }
 }
 
@@ -80,20 +103,15 @@ function differentButtonDispaly(status) {
   }
 }
 
-function removeTask(event) {
-  var currentEvent = event || window.event;
-  if(currentEvent.target) {
-    var target = currentEvent.target;
-  }
-  else {
-    var target = currentEvent.srcElement;
-  }
+function removeTask(target) {
   if('X' === target.innerText) {
+    var li = target.parentNode;
+    var key = li.getElementsByClassName('key')[0].innerText;
     if(confirm('是否删除该TODO？')) {
       var ol = target.parentNode.parentNode;
       ol.removeChild(target.parentNode);
+      localStorage.removeItem(key);
     }
   }
 }
-
 

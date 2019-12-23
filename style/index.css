@@ -116,3 +116,7 @@
 .row span {
   margin-left: 5px;
 }
+
+.key {
+  display: none;
+}
