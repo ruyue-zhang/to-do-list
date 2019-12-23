@@ -57,7 +57,7 @@ function differentButtonDispaly(status) {
   }
 }
 
-function removeTask(target) {
+function removeTask(event) {
   var currentEvent = event || window.event;
   if(currentEvent.target) {
     var target = currentEvent.target;
@@ -66,10 +66,11 @@ function removeTask(target) {
     var target = currentEvent.srcElement;
   }
   if('X' === target.innerText) {
-    var ol = target.parentNode.parentNode;
-    ol.removeChild(target.parentNode);
+    if(confirm('是否删除该TODO？')) {
+      var ol = target.parentNode.parentNode;
+      ol.removeChild(target.parentNode);
+    }
   }
-
 }
 
 
