@@ -1,28 +1,46 @@
 var key = 0;
 var state = 'All';
 function addTask(event) {
-  ++key;
-  var taskList = document.getElementsByClassName('task-list')[0];
   var taskInfo = document.getElementsByClassName('task')[0].value;
   if(taskInfo) {
-    localStorage.setItem(key,taskInfo);
-    getDataFromDB(key,taskList);
-    if('Complete' === state) {
-      differentButtonDispaly('Complete');
-    }
-    document.getElementsByClassName('task')[0].value = '';
+    setDataIntoDB(taskInfo,false);
+    var taskObject = getDataFromDB(key);
+    addNewTaskInPage(taskObject);
   }
 }
 
-function getDataFromDB(key,taskList) {
+function setDataIntoDB(taskInfo,checked) {
+  ++key;
+  var taskObject = {
+    taskName: taskInfo,
+    isChecked: checked
+  }
+  var taskStatus = JSON.stringify(taskObject);
+  localStorage.setItem(key,taskStatus);
+}
+
+function getDataFromDB(key) {
+  var taskList = document.getElementsByClassName('task-list')[0];
   var taskInfo = localStorage.getItem(key);
-  var row = "<input type='checkbox' class='checked'>" +
-  "<span>" + taskInfo + "</span>" + 
+  taskInfo = JSON.parse(taskInfo);
+  return taskInfo;
+}
+
+function addNewTaskInPage(taskObject) {
+  var taskList = document.getElementsByClassName('task-list')[0];
+  var isChecked = taskObject.isChecked ? 'checked' : '';
+  var taskInnerHtml = "<input type='checkbox' class='checked' "+isChecked+">" +
+  "<span>" + taskObject.taskName + "</span>" + 
   "<button class='remove' onclick='removeTask()'>X</button>";
   var li = document.createElement("li");
-  li.innerHTML = row;
+  li.innerHTML = taskInnerHtml;
   li.className = 'row';
   taskList.appendChild(li);
+
+  if('Complete' === state) {
+    differentButtonDispaly('Complete');
+  }
+  document.getElementsByClassName('task')[0].value = '';
 }
 
 function addLineThrough(event) {
