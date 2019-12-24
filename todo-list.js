@@ -1,14 +1,20 @@
-var key = 0;
+//localStorage.clear();
 var state = 'All';
 var taskList = document.getElementsByClassName('task-list')[0];
+var key = localStorage.getItem('index');
+displayAll();
 
-function addTask(event) {
+function addTask() {
   ++key;
   var taskInfo = document.getElementsByClassName('task')[0].value;
   if(taskInfo) {
     setDataIntoDB(key,taskInfo,false);
-    var taskObject = getDataFromDB(key);
-    addTaskInPage(taskObject);
+    if('Complete' !== state) {
+      var taskObject = getDataFromDB(key);
+      addTaskInPage(taskObject);
+    }
+    document.getElementsByClassName('task')[0].value = '';
+    localStorage.setItem('index',key);
   }
 }
 
@@ -28,39 +34,40 @@ function getDataFromDB(key) {
   return taskInfo;
 }
 
+function changeIsCheckedInDB(target) {
+  var li = target.parentNode;
+  var key = li.getElementsByClassName('key')[0].innerText;
+  var taskInfo = li.getElementsByClassName('task-name')[0].innerText;
+  console.log(taskInfo);
+  var isChecked = target.checked;
+  setDataIntoDB(Number(key),taskInfo,isChecked);
+}
+
 function addTaskInPage(taskObject) {
   var isChecked = taskObject.isChecked ? 'checked' : '';
-  var taskInnerHtml = "<input type='checkbox' class='checked' "+isChecked+">" +
+  var taskInnerHtml = "<input type='checkbox' class='checked' onclick='addLineThrough()'"+isChecked+">" +
   "<span class='task-name'>" + taskObject.taskName + "</span>" + 
-  "<button class='remove'>X</button>" +
+  "<button class='remove' onclick='removeTask()'>X</button>" +
   "<span class='key'>" + taskObject.key + "</span>";
-  console.log(taskObject.key);
   var li = document.createElement("li");
   li.innerHTML = taskInnerHtml;
   li.className = 'row';
-  taskList.appendChild(li);
-
-  if('Complete' === state) {
-    differentButtonDispaly('Complete');
+  if(taskObject.isChecked) {
+    li.style.textDecoration = "line-through";
+    li.style.color = "#cbcbcb"
   }
-  document.getElementsByClassName('task')[0].value = '';
+  taskList.appendChild(li);
 }
 
-
-taskList.addEventListener('click',function(event) {
+function creatEventTarget(event) {
   var currentEvent = event || window.event;
-  if(currentEvent.target) {
-    var target = currentEvent.target;
-  }
-  else {
-    var target = currentEvent.srcElement;
-  }
-  addLineThrough(target);
-  changeIsCheckedInDB(target);
-  removeTask(target);
-})
+  var target = null;
+  currentEvent.target ? target = currentEvent.target : target = currentEvent.srcElement;
+  return target;
+}
 
-function addLineThrough(target) {
+function addLineThrough(evnet) {
+  var target = creatEventTarget(event)
   var li = target.parentNode;
   if(target.checked) {
     li.style.textDecoration = "line-through";
@@ -70,40 +77,11 @@ function addLineThrough(target) {
     li.style.textDecoration = "none";
     li.style.color = "";
   }
+  changeIsCheckedInDB(target);
 }
 
-function changeIsCheckedInDB(target) {
-  var li = target.parentNode;
-  var key = li.getElementsByClassName('key')[0].innerText;
-  var taskInfo = document.getElementsByClassName('task-name')[0].innerText;
-  var isChecked = target.checked;
-  if(target.checked) {
-    setDataIntoDB(key,taskInfo,true);
-  }
-  else {
-    setDataIntoDB(key,taskInfo,false);
-  }
-}
-
-function differentButtonDispaly(status) {
-  state = status;
-  var row = document.querySelectorAll("li");
-  for(var i = 0; i < row.length; i++) {
-    var check = row[i].getElementsByClassName('checked')[0];
-    switch(status) {
-      case 'Active':
-        check.checked ? row[i].style.display = 'none' : row[i].style.display = '';
-        break;
-      case 'Complete':
-        !check.checked ? row[i].style.display = 'none' : row[i].style.display = '';
-        break;
-      default:
-        row[i].style.display = '';
-    } 
-  }
-}
-
-function removeTask(target) {
+function removeTask(event) {
+  var target = creatEventTarget(event)
   if('X' === target.innerText) {
     var li = target.parentNode;
     var key = li.getElementsByClassName('key')[0].innerText;
@@ -111,6 +89,43 @@ function removeTask(target) {
       var ol = target.parentNode.parentNode;
       ol.removeChild(target.parentNode);
       localStorage.removeItem(key);
+    }
+  }
+}
+
+function differentButtonDispaly(status) {
+  state = status;
+  var ol = document.getElementsByClassName('task-list')[0];
+  ol.innerHTML = '';
+  var index = localStorage.getItem('index');
+  for(var key = 1; key <= index; key++) {
+    var taskObject = getDataFromDB(key);
+    switch(status) {
+      case 'Active':
+          if(taskObject && !taskObject.isChecked) {
+            addTaskInPage(taskObject);
+          }
+          break;
+      case 'Complete':
+          if(taskObject && taskObject.isChecked) {
+            addTaskInPage(taskObject);
+          }
+          break;
+      default:
+          if(taskObject) {
+            addTaskInPage(taskObject);
+          }
+          break;
+    } 
+  }
+}
+
+function displayAll() {
+  var index = localStorage.getItem('index');
+  for(var key = 1; key <= index; key++) {
+    var taskObject = getDataFromDB(key);
+    if(taskObject) {
+      addTaskInPage(taskObject);
     }
   }
 }
