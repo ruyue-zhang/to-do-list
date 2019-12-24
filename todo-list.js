@@ -1,4 +1,3 @@
-//localStorage.clear();
 var state = 'All';
 var taskList = document.getElementsByClassName('task-list')[0];
 var key = localStorage.getItem('index');
@@ -45,7 +44,8 @@ function changeIsCheckedInDB(target) {
 
 function addTaskInPage(taskObject) {
   var isChecked = taskObject.isChecked ? 'checked' : '';
-  var taskInnerHtml = "<input type='checkbox' class='checked' onclick='addLineThrough()'"+isChecked+">" +
+  var taskInnerHtml = 
+  "<input type='checkbox' class='checked' onclick='addLineThrough()'"+isChecked+">" +
   "<span class='task-name'>" + taskObject.taskName + "</span>" + 
   "<button class='remove' onclick='removeTask()'>X</button>" +
   "<span class='key'>" + taskObject.key + "</span>";

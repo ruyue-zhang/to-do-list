@@ -55,6 +55,7 @@
 
   background-color: #fc999c;
 }
+
 .button-add:hover {
   background-color: #f7abae;
 }
@@ -84,7 +85,6 @@
   margin: 30px auto 10px auto;
 
   width: 300px;
-
 }
 
 .button {
@@ -99,12 +99,15 @@
 .remove {
   position: absolute;
   left: 350px;
-  border: 0;
+
   width: 20px;
   height: 25px;
+
+  border: 0;
   font-size: 15px;
   color: #555050;
   outline-color: rgb(252, 252, 252);
+  
   background-color: rgb(228, 114, 114, 0);
   display: none; 
 }
